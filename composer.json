@@ -1,0 +1,23 @@
+{
+    "name": "schubwerk/contao-schubwerk-tracking-bundle",
+    "description": "Schubwerk Tracking for Contao",
+    "type": "contao-bundle",
+    "require": {
+        "contao/core-bundle": "^4.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Schubwerk\\ContaoSchubwerkTrackingBundle\\": "src/"
+        }
+    },
+    "license": "LGPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Schubwerk GmbH",
+            "email": "info@schubwerk.de"
+        }
+    ],
+    "extra": {
+        "contao-manager-plugin": "Schubwerk\\ContaoSchubwerkTrackingBundle\\ContaoManager\\Plugin"
+    }
+}
