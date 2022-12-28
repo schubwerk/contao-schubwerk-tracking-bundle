@@ -7,3 +7,7 @@ This module adds [schubwerk](https://www.schubwerk.de/) server-side tracking and
 * Install the module (Composer package: `schubwerk/contao-schubwerk-tracking-bundle`)
 * Configure your account key under `System -> Settings -> schubwerk tracking`
   ![Config](doc/config.png)
+
+## Remarks
+
+* The modules send a CSP header `Content-Security-Policy: frame-ancestors https://tracker.schubwerk.de`.

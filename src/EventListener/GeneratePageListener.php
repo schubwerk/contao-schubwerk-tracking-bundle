@@ -28,12 +28,14 @@ class GeneratePageListener
             return;
         }
 
-        $url = $this->buildEventUrl('pageviews', $GLOBALS['TL_CONFIG']['schubwerk_tracking_project_id']);
-        $this->sendRequestAndForget('POST', $url, $_SERVER);
+        header('Content-Security-Policy: frame-ancestors ' . $this->getTrackerBaseUrl());
 
         if ($script = $this->buildHeadScript()) {
             $GLOBALS['TL_HEAD'][] = $script;
         }
+
+        $url = $this->buildEventUrl('pageviews', $GLOBALS['TL_CONFIG']['schubwerk_tracking_project_id']);
+        $this->sendRequestAndForget('POST', $url, $_SERVER);
     }
 
     private function getTrackerBaseUrl()
