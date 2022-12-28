@@ -1,0 +1,8 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+  Schubwerk\ContaoSchubwerkTrackingBundle\:
+    resource: ../../
+    exclude: ../../{Entity,Migrations,Model,Resources,Tests,Widget}
