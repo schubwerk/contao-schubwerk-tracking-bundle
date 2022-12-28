@@ -10,8 +10,8 @@
         <target>Account Key</target>
       </trans-unit>
       <trans-unit id="tl_settings.schubwerk_tracking_project_id.1">
-        <source>Account key from your dashboard. Example format: f998768e-557e-4557-ab4e-87995078feee</source>
-        <target>Account key from your dashboard. Example format: f998768e-557e-4557-ab4e-87995078feee</target>
+        <source>Account key from your dashboard. Example format: f998768e-557e-4557-ab4e-87995078feee - leave empty to disable.</source>
+        <source>Account key from your dashboard. Example format: f998768e-557e-4557-ab4e-87995078feee - leave empty to disable.</source>
       </trans-unit>
       <trans-unit id="tl_settings.schubwerk_tracking_track_events.0">
         <source>Event tracking</source>

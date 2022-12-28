@@ -3,7 +3,7 @@
 $GLOBALS['TL_DCA']['tl_settings']['fields']['schubwerk_tracking_project_id'] =
     array(
         'inputType' => 'text',
-        'eval' => array('mandatory' => true, 'tl_class' => 'w50'),
+        'eval' => array('mandatory' => false, 'tl_class' => 'w50'),
     );
 
 $GLOBALS['TL_DCA']['tl_settings']['fields']['schubwerk_tracking_track_events'] =
