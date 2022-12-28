@@ -17,6 +17,8 @@ class GeneratePageListener
     const API_URL = 'http://tracker.schubwerk.de/api/tracker';
     const API_VERSION = 'v1';
 
+    const SCRIPT_URL = 'https://tracker.schubwerk.de/js/tracking.js';
+
     /**
      * @var HttpClient
      */
@@ -30,6 +32,10 @@ class GeneratePageListener
 
         $url = $this->buildEventUrl('pageviews', $GLOBALS['TL_CONFIG']['schubwerk_tracking_project_id']);
         $this->sendRequestAndForget('POST', $url, $_SERVER);
+
+        if ($script = $this->buildHeadScript()) {
+            $GLOBALS['TL_HEAD'][] = $script;
+        }
     }
 
     private function buildEventUrl(string $event_name, string $api_key): string
@@ -92,5 +98,32 @@ class GeneratePageListener
         // Send request to server
         fwrite($connection, $request);
         fclose($connection);
+    }
+
+    private function buildHeadScript()
+    {
+        if (empty($GLOBALS['TL_CONFIG']['schubwerk_tracking_track_events']) || empty($GLOBALS['TL_CONFIG']['schubwerk_tracking_project_id'])) {
+            return false;
+        }
+
+        $projectId = $GLOBALS['TL_CONFIG']['schubwerk_tracking_project_id'];
+
+        $placeholders = [
+            '{{TRACKER_URL}}' => self::SCRIPT_URL,
+            '{{PROJECT_KEY}}' => $projectId,
+            '{{WRITE_KEY}}' => $projectId,
+            '{{API_END_POINT}}' => str_replace(['https://', 'http://'],'',self::API_URL),
+            '{{PROTOCOL}}' => parse_url(self::API_URL, PHP_URL_SCHEME),
+            '{{VERSION}}' => self::API_VERSION,
+        ];
+        $script = file_get_contents( __DIR__  . '/../Resources/scaffolding/tracker.js.template');
+        $script = str_replace(array_keys($placeholders), array_values($placeholders), $script);
+        $dom = new \DOMDocument('1.0', 'utf-8');
+        $dom_tracker = $dom->createElement('script');
+        $dom_tracker->setAttribute('id', 'schubwerk_tracking');
+        $dom_tracker->textContent = $script;
+        $dom->appendChild( $dom_tracker );
+
+        return $dom->saveHTML();
     }
 }

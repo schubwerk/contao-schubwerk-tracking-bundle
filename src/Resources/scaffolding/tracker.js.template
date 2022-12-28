@@ -1,0 +1,14 @@
+
+(function(name,path,ctx){ctx[name]=ctx[name]||{ready:function(fn){var h=document.getElementsByTagName('head')[0],s=document.createElement('script'),w=window,loaded;s.onload=s.onreadystatechange=function(){if((s.readyState&&!(/^c|loade/.test(s.readyState)))||loaded){return}s.onload=s.onreadystatechange=null;loaded=1;ctx[name].ready(fn)};s.async=1;s.src=path;h.parentNode.insertBefore(s,h)}}})
+('SchubwerkTracking', '{{TRACKER_URL}}', this);
+
+SchubwerkTracking.ready(function(){
+    const client = new SchubwerkTracking({
+        projectId: '{{PROJECT_KEY}}',
+        writeKey: '{{WRITE_KEY}}',
+        host:"{{API_END_POINT}}",
+        protocol:"{{PROTOCOL}}",
+        version: "{{VERSION}}"
+    });
+    client.initAutoTracking();
+});
