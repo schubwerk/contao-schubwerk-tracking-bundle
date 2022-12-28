@@ -27,11 +27,12 @@ class GeneratePageListener
         if (empty($GLOBALS['TL_CONFIG']['schubwerk_tracking_project_id'])) {
             return;
         }
-        $url = $this->build_event_url('pageviews', $GLOBALS['TL_CONFIG']['schubwerk_tracking_project_id']);
+
+        $url = $this->buildEventUrl('pageviews', $GLOBALS['TL_CONFIG']['schubwerk_tracking_project_id']);
         $this->sendRequestAndForget('POST', $url, $_SERVER);
     }
 
-    private function build_event_url(string $event_name, string $api_key): string
+    private function buildEventUrl(string $event_name, string $api_key): string
     {
         return sprintf('%s/%s/projects/%s/events/server/%s',
             self::API_URL,
