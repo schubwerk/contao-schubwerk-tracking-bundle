@@ -6,18 +6,16 @@ use Contao\CoreBundle\ServiceAnnotation\Hook;
 use Contao\PageRegular;
 use Contao\LayoutModel;
 use Contao\PageModel;
-use Symfony\Component\HttpClient\NativeHttpClient;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
  * @Hook("generatePage")
  */
 class GeneratePageListener
 {
-    const API_URL = 'http://tracker.schubwerk.de/api/tracker';
+    const API_PATH = '/api/tracker';
     const API_VERSION = 'v1';
 
-    const SCRIPT_URL = 'https://tracker.schubwerk.de/js/tracking.js';
+    const SCRIPT_PATH = '/js/tracking.js';
 
     /**
      * @var HttpClient
@@ -38,10 +36,20 @@ class GeneratePageListener
         }
     }
 
+    private function getTrackerBaseUrl()
+    {
+        if (empty($GLOBALS['TL_CONFIG']['schubwerk_tracking_base'])) {
+            return 'https://tracker.schubwerk.de';
+        }
+
+        return $GLOBALS['TL_CONFIG']['schubwerk_tracking_base'];
+    }
+
     private function buildEventUrl(string $event_name, string $api_key): string
     {
-        return sprintf('%s/%s/projects/%s/events/server/%s',
-            self::API_URL,
+        return sprintf('%s%s/%s/projects/%s/events/server/%s',
+            $this->getTrackerBaseUrl(),
+            self::API_PATH,
             self::API_VERSION,
             $api_key,
             $event_name
@@ -109,11 +117,11 @@ class GeneratePageListener
         $projectId = $GLOBALS['TL_CONFIG']['schubwerk_tracking_project_id'];
 
         $placeholders = [
-            '{{TRACKER_URL}}' => self::SCRIPT_URL,
+            '{{TRACKER_URL}}' => $this->getTrackerBaseUrl() . self::SCRIPT_PATH,
             '{{PROJECT_KEY}}' => $projectId,
             '{{WRITE_KEY}}' => $projectId,
-            '{{API_END_POINT}}' => str_replace(['https://', 'http://'],'',self::API_URL),
-            '{{PROTOCOL}}' => parse_url(self::API_URL, PHP_URL_SCHEME),
+            '{{API_END_POINT}}' => str_replace(['https://', 'http://'],'',$this->getTrackerBaseUrl() . self::API_PATH),
+            '{{PROTOCOL}}' => parse_url($this->getTrackerBaseUrl(), PHP_URL_SCHEME),
             '{{VERSION}}' => self::API_VERSION,
         ];
         $script = file_get_contents( __DIR__  . '/../Resources/scaffolding/tracker.js.template');
