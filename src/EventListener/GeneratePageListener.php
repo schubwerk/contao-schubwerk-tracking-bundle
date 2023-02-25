@@ -72,14 +72,19 @@ class GeneratePageListener
         if ($parts === false)
             throw new Exception('Unable to parse URL');
         $host = $parts['host'] ?? null;
-        $port = $parts['port'] ?? 80;
+
+        if ($parts['scheme'] === 'https') {
+            $port = $parts['port'] ?? 443;
+        } else {
+            $port = $parts['port'] ?? 80;
+        }
         $path = $parts['path'] ?? '/';
         $query = $parts['query'] ?? '';
         parse_str($query, $queryParts);
 
         if ($host === null)
             throw new Exception('Unknown host');
-        $connection = fsockopen($host, $port, $errno, $errstr, 30);
+        $connection = fsockopen((($parts['scheme'] === 'https') ? 'ssl://' : '') . $host, $port, $errno, $errstr, 30);
         if ($connection === false)
             throw new Exception('Unable to connect to ' . $host);
         $method = strtoupper($method);
@@ -90,7 +95,7 @@ class GeneratePageListener
         }
 
         // Build request
-        $request  = $method . ' ' . $path;
+        $request = $method . ' ' . $path;
         if ($queryParts) {
             $request .= '?' . http_build_query($queryParts);
         }
