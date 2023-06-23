@@ -16,11 +16,22 @@ class GeneratePageListener
     const API_VERSION = 'v1';
 
     const SCRIPT_PATH = '/js/tracking.js';
+    const PLUGIN_VERSION = '1.3.0';
 
-    /**
-     * @var HttpClient
-     */
-    private $httpClient;
+    const SERVER_FIELDS = [
+        'APP_NAME',
+        'HTTPS',
+        'HTTP_ACCEPT_LANGUAGE',
+        'HTTP_HOST',
+        'HTTP_REFERER',
+        'HTTP_USER_AGENT',
+        'HTTP_USER_AGENT',
+        'REMOTE_ADDR',
+        'REMOTE_ADDR',
+        'REQUEST_SCHEME',
+        'REQUEST_TIME_FLOAT',
+        'REQUEST_URI',
+    ];
 
     public function __invoke(PageModel $pageModel, LayoutModel $layout, PageRegular $pageRegular): void
     {
@@ -35,7 +46,7 @@ class GeneratePageListener
         }
 
         $url = $this->buildEventUrl('pageviews', $GLOBALS['TL_CONFIG']['schubwerk_tracking_project_id']);
-        $this->sendRequestAndForget('POST', $url, $_SERVER);
+        $this->sendRequestAndForget('POST', $url, $this->getServerArray());
     }
 
     private function getTrackerBaseUrl()
@@ -101,6 +112,7 @@ class GeneratePageListener
         }
         $request .= ' HTTP/1.1' . "\r\n";
         $request .= 'Host: ' . $host . "\r\n";
+        $request .= 'User-Agent: ' . $this->getUserAgent() . "\r\n";
 
         $body = json_encode($params);
         if ($body) {
@@ -140,5 +152,21 @@ class GeneratePageListener
         $dom->appendChild( $dom_tracker );
 
         return $dom->saveHTML();
+    }
+
+    private function getUserAgent(): string
+    {
+        return 'Contao SchubwerkTracking/' . self::PLUGIN_VERSION;
+    }
+
+    private function getServerArray()
+    {
+        return array_filter(
+            $_SERVER,
+            function ($key) {
+                return in_array($key, self::SERVER_FIELDS);
+            },
+            ARRAY_FILTER_USE_KEY
+        );
     }
 }

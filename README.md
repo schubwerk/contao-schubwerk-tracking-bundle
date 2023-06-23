@@ -11,3 +11,8 @@ This module adds [schubwerk](https://www.schubwerk.de/) server-side tracking and
 ## Remarks
 
 * The modules send a CSP header `Content-Security-Policy: frame-ancestors https://tracker.schubwerk.de`.
+
+## Release Process
+
+* Update the version number in `EventListener/GeneratePageListener.php`
+* Tag new version
