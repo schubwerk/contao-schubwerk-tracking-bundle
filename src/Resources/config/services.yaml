@@ -6,3 +6,5 @@ services:
   Schubwerk\ContaoSchubwerkTrackingBundle\:
     resource: ../../
     exclude: ../../{Entity,Migrations,Model,Resources,Tests,Widget}
+  Schubwerk\ContaoSchubwerkTrackingBundle\Controller\ForwardController:
+    tags: ['controller.service_arguments']

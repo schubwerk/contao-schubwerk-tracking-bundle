@@ -10,5 +10,7 @@ SchubwerkTracking.ready(function(){
         protocol:"{{PROTOCOL}}",
         version: "{{VERSION}}"
     });
-    client.initAutoTracking();
+    client.initAutoTracking({
+        recordPageViews: true
+    });
 });
