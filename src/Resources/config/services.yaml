@@ -8,3 +8,5 @@ services:
     exclude: ../../{Entity,Migrations,Model,Resources,Tests,Widget}
   Schubwerk\ContaoSchubwerkTrackingBundle\Controller\ForwardController:
     tags: ['controller.service_arguments']
+  Schubwerk\ContaoSchubwerkTrackingBundle\Services\Config:
+    public: true

@@ -5,7 +5,8 @@ namespace Schubwerk\ContaoSchubwerkTrackingBundle\Services;
 use Contao\CoreBundle\ContaoCoreBundle;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\System;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Schubwerk\Core\Downloader;
+use Schubwerk\Core\DownloadException;
 
 class Config
 {
@@ -48,4 +49,21 @@ class Config
     {
         return ContaoCoreBundle::getVersion();
     }
+
+    public function ensureSclientDownloaded(bool $force = false, string $apiKey = null, string $url = null): ?DownloadException
+    {
+        try {
+            (new Downloader(
+                $url ?? $this->getTrackerBaseUrl(),
+                $apiKey ?? $this->getApiKey(),
+                $this->getCacheDir(),
+                $this->getWebDir(),
+            ))->download($force);
+        } catch (DownloadException $e) {
+            return $e;
+        }
+
+        return null;
+    }
+
 }

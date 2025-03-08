@@ -63,23 +63,23 @@ class GeneratePageListener
             return false;
         }
 
-        $this->ensureSclientDownloaded();
+        $this->config->ensureSclientDownloaded();
 
         $placeholders = [
             '{{TRACKER_URL}}' => self::SCRIPT_PATH,
             '{{PROJECT_KEY}}' => 'local',
             '{{WRITE_KEY}}' => 'local',
-            '{{API_END_POINT}}' => str_replace(['https://', 'http://'],'',$this->getApiUrl()),
+            '{{API_END_POINT}}' => str_replace(['https://', 'http://'], '', $this->getApiUrl()),
             '{{PROTOCOL}}' => parse_url($this->getApiUrl(), PHP_URL_SCHEME),
             '{{VERSION}}' => self::API_VERSION,
         ];
-        $script = file_get_contents( __DIR__  . '/../Resources/scaffolding/tracker.js.template');
+        $script = file_get_contents(__DIR__ . '/../Resources/scaffolding/tracker.js.template');
         $script = str_replace(array_keys($placeholders), array_values($placeholders), $script);
         $dom = new \DOMDocument('1.0', 'utf-8');
         $dom_tracker = $dom->createElement('script');
         $dom_tracker->setAttribute('id', 'schubwerk_tracking');
         $dom_tracker->textContent = $script;
-        $dom->appendChild( $dom_tracker );
+        $dom->appendChild($dom_tracker);
 
         return $dom->saveHTML();
     }
@@ -90,29 +90,5 @@ class GeneratePageListener
         $baseUrl = substr($routeUrl, 0, strpos($routeUrl, '/v1'));
         return $baseUrl;
     }
-
-    private function getServerArray()
-    {
-        return array_filter(
-            $_SERVER,
-            function ($key) {
-                return in_array($key, self::SERVER_FIELDS);
-            },
-            ARRAY_FILTER_USE_KEY
-        );
-    }
-
-    private function ensureSclientDownloaded()
-    {
-        try {
-            (new Downloader(
-                $this->config->getTrackerBaseUrl(),
-                $this->config->getApiKey(),
-                $this->config->getCacheDir(),
-                $this->config->getWebDir(),
-            ))->download();
-        } catch (DownloadException $e) {
-//            add_settings_error( 'general', 'settings_updated', $e->getMessage(), 'error' );
-        }
-    }
 }
+
