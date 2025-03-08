@@ -72,6 +72,7 @@ class GeneratePageListener
             '{{API_END_POINT}}' => str_replace(['https://', 'http://'], '', $this->getApiUrl()),
             '{{PROTOCOL}}' => parse_url($this->getApiUrl(), PHP_URL_SCHEME),
             '{{VERSION}}' => self::API_VERSION,
+            '{{ORIGIN}}' => ltrim($this->config->getTrackerBaseUrl(), '/') . '/'
         ];
         $script = file_get_contents(__DIR__ . '/../Resources/scaffolding/tracker.js.template');
         $script = str_replace(array_keys($placeholders), array_values($placeholders), $script);
