@@ -3,7 +3,8 @@
     "description": "Schubwerk Tracking for Contao",
     "type": "contao-bundle",
     "require": {
-        "contao/core-bundle": "^4.4"
+        "contao/core-bundle": "^4.13",
+        "schubwerk/core": "^0.1.0"
     },
     "autoload": {
         "psr-4": {

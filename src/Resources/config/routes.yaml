@@ -1,0 +1,4 @@
+app.controller:
+  resource: ../../Controller/
+  type: annotation
+

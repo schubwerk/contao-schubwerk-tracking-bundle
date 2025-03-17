@@ -8,7 +8,10 @@ SchubwerkTracking.ready(function(){
         writeKey: '{{WRITE_KEY}}',
         host:"{{API_END_POINT}}",
         protocol:"{{PROTOCOL}}",
-        version: "{{VERSION}}"
+        version: "{{VERSION}}",
+        orgin: "{{ORIGIN}}"
     });
-    client.initAutoTracking();
+    client.initAutoTracking({
+        recordPageViews: true
+    });
 });
