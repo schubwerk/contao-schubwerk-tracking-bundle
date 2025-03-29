@@ -60,7 +60,7 @@ class Config
                 $this->getWebDir(),
             ))->download($force);
         } catch (DownloadException $e) {
-            return $e;
+            return new DownloadException('Check that both, base URL and account key, are correct and the server can make external connections (allow_url_fopen, firewall and so on). '.$e->getMessage() );
         }
 
         return null;

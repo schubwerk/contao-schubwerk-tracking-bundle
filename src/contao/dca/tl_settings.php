@@ -8,7 +8,7 @@ $GLOBALS['TL_DCA']['tl_settings']['fields']['schubwerk_tracking_project_id'] =
             static function ($apiKey) {
                 $container = \Contao\System::getContainer();
                 $config = $container->get(\Schubwerk\ContaoSchubwerkTrackingBundle\Services\Config::class);
-                $e = $config->ensureSclientDownloaded(true, $apiKey);
+                $e = $config->ensureSclientDownloaded(true, $_POST['schubwerk_tracking_project_id'], $_POST['schubwerk_tracking_base']);
                 if ($e !== null) {
                     throw $e;
                 }
@@ -21,15 +21,6 @@ $GLOBALS['TL_DCA']['tl_settings']['fields']['schubwerk_tracking_base'] =
     array(
         'inputType' => 'text',
         'eval' => array('mandatory' => false, 'tl_class' => 'clr'),
-        static function ($url) {
-            $container = \Contao\System::getContainer();
-            $config = $container->get(\Schubwerk\ContaoSchubwerkTrackingBundle\Services\Config::class);
-            $e = $config->ensureSclientDownloaded(true, null, $url);
-            if ($e !== null) {
-                throw $e;
-            }
-            return $url;
-        }
     );
 
 \Contao\CoreBundle\DataContainer\PaletteManipulator::create()
