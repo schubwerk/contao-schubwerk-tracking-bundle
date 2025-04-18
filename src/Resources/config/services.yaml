@@ -10,3 +10,6 @@ services:
     tags: ['controller.service_arguments']
   Schubwerk\ContaoSchubwerkTrackingBundle\Services\Config:
     public: true
+  Schubwerk\ContaoSchubwerkTrackingBundle\EventListener\AllowFrameInclusionListener:
+    tags:
+      - { name: kernel.event_subscriber }
