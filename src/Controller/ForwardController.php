@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ForwardController extends AbstractController
 {
-    const PLUGIN_VERSION = '2.0.0';
+    const PLUGIN_VERSION = '2.0.3';
 
     private Config $config;
     private LoggerInterface $logger;
