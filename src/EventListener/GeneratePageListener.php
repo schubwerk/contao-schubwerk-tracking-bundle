@@ -6,10 +6,8 @@ use Contao\CoreBundle\ServiceAnnotation\Hook;
 use Contao\PageRegular;
 use Contao\LayoutModel;
 use Contao\PageModel;
-use Contao\System;
 use Schubwerk\ContaoSchubwerkTrackingBundle\Services\Config;
-use Schubwerk\Core\Downloader;
-use Schubwerk\Core\DownloadException;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -39,15 +37,21 @@ class GeneratePageListener
 
     private RouterInterface $router;
     private Config $config;
+    private RequestStack $requestStack;
 
-    public function __construct(RouterInterface $router, Config $config)
+    public function __construct(RouterInterface $router, Config $config, RequestStack $requestStack)
     {
         $this->router = $router;
         $this->config = $config;
+        $this->requestStack = $requestStack;
     }
 
     public function __invoke(PageModel $pageModel, LayoutModel $layout, PageRegular $pageRegular): void
     {
+        if ($this->requestStack->getCurrentRequest()->attributes->get('_preview', false)) {
+            return;
+        }
+
         if (empty($GLOBALS['TL_CONFIG']['schubwerk_tracking_project_id'])) {
             return;
         }
